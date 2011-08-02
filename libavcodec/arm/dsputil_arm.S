@@ -29,9 +29,18 @@ function ff_prefetch_arm, export=1
         subs            r2,  r2,  #1
         pld             [r0]
         add             r0,  r0,  r1
+#if CONFIG_THUMB
+        bne             ff_prefetch_arm_stub
+#else
         bne             ff_prefetch_arm
+#endif
         bx              lr
 endfunc
+
+#if CONFIG_THUMB
+ff_prefetch_arm_stub:
+	ldr		pc, =ff_prefetch_arm
+#endif
 #else
 #define pld @
 #endif

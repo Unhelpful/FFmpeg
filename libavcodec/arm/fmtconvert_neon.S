@@ -69,11 +69,20 @@ function ff_float_to_int16_neon, export=1
         bx              lr
 endfunc
 
+#if CONFIG_THUMB
+ff_float_to_int16_neon_stub:
+	ldr		pc, =ff_float_to_int16_neon
+#endif
+
 function ff_float_to_int16_interleave_neon, export=1
         cmp             r3, #2
         itt             lt
         ldrlt           r1, [r1]
+#if CONFIG_THUMB
+	blt             ff_float_to_int16_neon_stub
+#else
         blt             ff_float_to_int16_neon
+#endif
         bne             4f
 
         ldr             r3, [r1]
