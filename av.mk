@@ -20,8 +20,7 @@ OBJS += $(OBJS-yes)
 FFNAME := lib$(NAME)
 FFLIBS := $(foreach,NAME,$(FFLIBS),lib$(NAME))
 
-FFCFLAGS  = -DHAVE_AV_CONFIG_H -Wno-sign-compare -Wno-switch -Wno-pointer-sign
-FFCFLAGS += -include $(LOCAL_PATH)/../config-$(TARGET_ARCH_VARIANT).h
+LOCAL_CFLAGS += -DHAVE_AV_CONFIG_H $(FFCPPFLAGS) -include $(LOCAL_PATH)/../config-$(TARGET_ARCH_VARIANT).h $(FFCFLAGS) -std=gnu99 -Wno-error=return-type -Wno-error=format-security
 
 ALL_S_FILES := $(wildcard $(LOCAL_PATH)/$(TARGET_ARCH)/*.S)
 ALL_S_FILES := $(addprefix $(TARGET_ARCH)/, $(notdir $(ALL_S_FILES)))

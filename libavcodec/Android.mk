@@ -10,8 +10,6 @@ LOCAL_C_INCLUDES :=		\
 	$(LOCAL_PATH)/..	\
 	external/zlib
 
-LOCAL_CFLAGS += $(FFCFLAGS)
-
 LOCAL_SHARED_LIBRARIES := libz libavutil
 LOCAL_MODULE_TAGS := optional
 

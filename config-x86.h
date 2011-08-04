@@ -6,7 +6,7 @@
 #define FFMPEG_DATADIR "/usr/local/share/ffmpeg"
 #define CC_TYPE "gcc"
 #define CC_VERSION __VERSION__
-#define restrict __restrict__
+#define restrict restrict
 #define EXTERN_PREFIX ""
 #define EXTERN_ASM 
 #define SLIBSUF ".so"
