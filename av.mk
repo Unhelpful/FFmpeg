@@ -1,13 +1,14 @@
 # LOCAL_PATH is one of libavutil, libavcodec, libavformat, or libswscale
 
-include $(LOCAL_PATH)/../config-$(TARGET_ARCH_VARIANT).mak
-#include $(LOCAL_PATH)/../config.mak
+SRC_PATH := $(ffmpeg_TOPDIR)
+include $(SRC_PATH)/config-$(TARGET_ARCH_VARIANT).mak
+ifneq ($(LOCAL_PATH),$(ffmpeg_TOPDIR))
+ifneq ($(subst $(ffmpeg_TOPDIR),,$(LOCAL_PATH)),$(LOCAL_PATH))
 
 OBJS :=
 OBJS-yes :=
 MMX-OBJS-yes :=
 SUBDIR := $(LOCAL_PATH)/
-SRC_PATH := $(ANDROID_BUILD_TOP)/external/ffmpeg
 include $(LOCAL_PATH)/Makefile
 ifeq ($(NAME),avcodec)
 include $(LOCAL_PATH)/$(TARGET_ARCH)/Makefile
@@ -19,8 +20,6 @@ OBJS += $(OBJS-yes)
 
 FFNAME := lib$(NAME)
 FFLIBS := $(foreach,NAME,$(FFLIBS),lib$(NAME))
-
-LOCAL_CFLAGS += -DHAVE_AV_CONFIG_H $(FFCPPFLAGS) -include $(LOCAL_PATH)/../config-$(TARGET_ARCH_VARIANT).h $(FFCFLAGS) -std=gnu99 -Wno-error=return-type -Wno-error=format-security
 
 ALL_S_FILES := $(wildcard $(LOCAL_PATH)/$(TARGET_ARCH)/*.S)
 ALL_S_FILES := $(addprefix $(TARGET_ARCH)/, $(notdir $(ALL_S_FILES)))
@@ -38,3 +37,8 @@ C_FILES := $(patsubst %.o,%.c,$(C_OBJS))
 S_FILES := $(patsubst %.o,%.S,$(S_OBJS))
 
 FFFILES := $(sort $(S_FILES)) $(sort $(C_FILES))
+LOCAL_CFLAGS += -DHAVE_AV_CONFIG_H
+endif
+endif
+
+LOCAL_CFLAGS += $(FFCPPFLAGS) -include $(ffmpeg_TOPDIR)/config-$(TARGET_ARCH_VARIANT).h $(FFCFLAGS) -std=gnu99 -Wno-error=return-type -Wno-error=format-security

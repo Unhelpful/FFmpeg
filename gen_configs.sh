@@ -4,9 +4,9 @@ x86_config=(--arch=x86)
 
 #for arch in armv7-a-neon ; do
 for arch in x86 armv7-a-neon armv7-a armv6j armv6-vfp armv5te armv5te-vfp armv4t ; do
-	config=(--disable-postproc --disable-muxers --disable-hwaccels --disable-devices --disable-encoders --disable-ffmpeg --disable-ffplay --disable-ffprobe --disable-ffserver --disable-swscale --disable-avdevice --disable-avfilter --target-os=linux)
+	config=(--disable-protocols --disable-filters --disable-postproc --disable-muxers --disable-hwaccels --disable-devices --disable-encoders --disable-ffmpeg --disable-ffplay --disable-ffserver --disable-swscale --disable-avdevice --disable-avfilter --target-os=linux)
 	if [ "${arch/arm}" != "$arch" ] ; then
-		arm_cflags="-mandroid $(make -npf $ANDROID_BUILD_TOP/build/core/combo/arch/arm/$arch.mk | grep arch_variant_cflags | sed 's/.*:= //g')"
+		arm_cflags="-mandroid $(make -npf $ANDROID_BUILD_TOP/build/core/combo/arch/arm/$arch.mk BUILD_COMBOS=$ANDROID_BUILD_TOP/build/core/combo/ | grep arch_variant_cflags | sed 's/.*:= //g')"
 		config=("${config[@]}" "--sysroot=${arm_sysroot}") 
 		if [ "${arch/armv4}" = "$arch" ] ; then
 			config=("${config[@]}" --enable-thumb)
